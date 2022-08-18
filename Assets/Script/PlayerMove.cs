@@ -14,6 +14,8 @@ public class PlayerMove : MonoBehaviour
     public MeshCollider colder;
     public Rigidbody rigidy;
 
+    public Transform trans;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,12 +25,28 @@ public class PlayerMove : MonoBehaviour
 
     void Move()
     {
-        float fosx = Input.GetAxisRaw("Horizontal");
-        float fosz = Input.GetAxisRaw("Vertical");
+        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            float fosx = Input.GetAxisRaw("Horizontal");
+            float fosz = Input.GetAxisRaw("Vertical");
+            rigidy.velocity += new Vector3(fosx * movespead, 0, fosz * movespead);
+            RoteMove(fosx, fosz);
+        }
+    }
+    void RoteMove(float fosx,float fosz)
+    {
+        Vector3 horvector= new Vector3(0,0,0);
 
-        Vector3 vect = new Vector3(fosx, 0, fosz);
-        vect *= movespead;
-        rigidy.velocity = vect;
+
+        if (fosx != 0)
+        {
+             horvector += fosx > 0 ? Vector3.right : Vector3.left;
+        }
+
+        Debug.Log(fosx);
+        this.trans.position=new Vector3(fosx, 1,1);
+        Quaternion.LookRotation(trans.position);
+        
     }
     void Jump()
     {
@@ -47,14 +65,9 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Jump();
         Move();
     }
-    private void FixedUpdate()
-    {
-        
-        Jump();
-    }
-
 
     public void OnCollisionEnter(Collision collision)
     {
