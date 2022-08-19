@@ -29,23 +29,21 @@ public class PlayerMove : MonoBehaviour
         {
             float fosx = Input.GetAxisRaw("Horizontal");
             float fosz = Input.GetAxisRaw("Vertical");
-            rigidy.velocity += new Vector3(fosx * movespead, 0, fosz * movespead);
+            Vector3 move = new Vector3(fosx, 0, fosz);
+            move = move.normalized * movespead * Time.deltaTime;
+            rigidy.MovePosition (transform.position+move);
             RoteMove(fosx, fosz);
         }
     }
     void RoteMove(float fosx,float fosz)
     {
-        Vector3 horvector= new Vector3(0,0,0);
+        Vector3 horvector= new Vector3(fosx,0,fosz);
 
 
-        if (fosx != 0)
-        {
-             horvector += fosx > 0 ? Vector3.right : Vector3.left;
-        }
+        Quaternion newrotoin = Quaternion.LookRotation(horvector);
+        rigidy.rotation = Quaternion.Slerp(rigidy.rotation, newrotoin, movespead * Time.deltaTime);
 
-        Debug.Log(fosx);
-        this.trans.position=new Vector3(fosx, 1,1);
-        Quaternion.LookRotation(trans.position);
+       
         
     }
     void Jump()
@@ -74,6 +72,14 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
         {
             jumpbool = false;
+        }
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "TreasureBox")
+        {
+
         }
     }
 }
