@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -14,15 +15,18 @@ public class PlayerMove : MonoBehaviour
     public MeshCollider colder;
     public Rigidbody rigidy;
 
-    public Transform trans;
+    
+    public bool find = false;
+    public List<CinemachineVirtualCamera> cinemachineVirtualCameras = new List<CinemachineVirtualCamera>();
 
     // Start is called before the first frame update
     void Start()
     {
         colder = GetComponent<MeshCollider>();
         rigidy = GetComponent<Rigidbody>();
+        cinemachineVirtualCameras[0].GetComponent<Animator>().SetBool("GameStart", true);
     }
-
+    
     void Move()
     {
         if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
@@ -42,6 +46,15 @@ public class PlayerMove : MonoBehaviour
 
         Quaternion newrotoin = Quaternion.LookRotation(horvector);
         rigidy.rotation = Quaternion.Slerp(rigidy.rotation, newrotoin, movespead * Time.deltaTime);
+        
+        //if (transform.rotation.eulerAngles.y>90)
+        //{
+        //    cinemachineVirtualCameras[0].Priority = 9;
+        //}
+        //else
+        //{
+        //    cinemachineVirtualCameras[0].Priority =11;
+        //}
 
        
         
@@ -63,8 +76,22 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Jump();
-        Move();
+        if (!GameStat.gamest.gameover)
+        {
+            Jump();
+            Move();
+            if (Input.GetKeyDown(KeyCode.Z) && find == false)
+            {
+                StartCoroutine(FindThings());
+            }
+        }
+    }
+
+    IEnumerator FindThings()
+    {
+        find = true;
+        yield return new WaitForSeconds(0.1f);
+        find = false;
     }
 
     public void OnCollisionEnter(Collision collision)
@@ -74,12 +101,20 @@ public class PlayerMove : MonoBehaviour
             jumpbool = false;
         }
     }
-
     public void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "TreasureBox")
+        //if (other.gameObject.tag == "Treasure"&&find)
+        //{
+        //    find = false;
+        //}
+    }
+    public void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Treasure" && find)
         {
-
+            find = false;
         }
     }
+
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PMesh : MonoBehaviour
 {
+    public int colliders = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +24,11 @@ public class PMesh : MonoBehaviour
 
         transform.GetComponent<MeshFilter>().mesh = new Mesh();
         transform.GetComponent<MeshFilter>().mesh.CombineMeshes(combine);
-        transform.GetComponent<MeshCollider>().sharedMesh = transform.GetComponent<MeshFilter>().mesh;
-        transform.gameObject.SetActive(true);
+        if (colliders==0)
+        {
+            transform.GetComponent<MeshCollider>().sharedMesh = transform.GetComponent<MeshFilter>().mesh;
+        }
+            transform.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
