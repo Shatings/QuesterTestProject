@@ -53,7 +53,7 @@ public class UI : MonoBehaviour
                 gameM.treasuretrue();
                 gameM.listtreasurebox = new List<TreasureBox>();
                 gameM.listtreasurebox = gameM.Makingtreasure();
-                GameStat.gamest.SetValue(1, 10 - GameStat.gamest.obstaclecount);
+                //GameStat.gamest.SetValue(1, 10 - GameStat.gamest.obstaclecount);
                 gameM.obstacletrue();
                 gameM.listobstacle = new List<Obstacle>();
                 gameM.listobstacle = gameM.obstacle();

@@ -11,11 +11,11 @@ public class PlayerMove : MonoBehaviour
     private float jumpspead = 0;
 
     [SerializeField]
-    private bool jumpbool=false;
+    private bool jumpbool = false;
     public MeshCollider colder;
     public Rigidbody rigidy;
 
-    
+
     public bool find = false;
     public List<CinemachineVirtualCamera> cinemachineVirtualCameras = new List<CinemachineVirtualCamera>();
 
@@ -26,27 +26,25 @@ public class PlayerMove : MonoBehaviour
         rigidy = GetComponent<Rigidbody>();
         cinemachineVirtualCameras[0].GetComponent<Animator>().SetBool("GameStart", true);
     }
-    
+
     void Move()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        float fosx = Input.GetAxisRaw("Horizontal");
+        float fosz = Input.GetAxisRaw("Vertical");
+        if (fosx != 0 || fosz != 0)
         {
-            float fosx = Input.GetAxisRaw("Horizontal");
-            float fosz = Input.GetAxisRaw("Vertical");
             Vector3 move = new Vector3(fosx, 0, fosz);
             move = move.normalized * movespead * Time.deltaTime;
-            rigidy.MovePosition (transform.position+move);
+            rigidy.MovePosition(transform.position + move);
             RoteMove(fosx, fosz);
         }
     }
-    void RoteMove(float fosx,float fosz)
+    void RoteMove(float fosx, float fosz)
     {
-        Vector3 horvector= new Vector3(fosx,0,fosz);
-
+        Vector3 horvector = new Vector3(fosx, 0, fosz);
 
         Quaternion newrotoin = Quaternion.LookRotation(horvector);
         rigidy.rotation = Quaternion.Slerp(rigidy.rotation, newrotoin, movespead * Time.deltaTime);
-        
         //if (transform.rotation.eulerAngles.y>90)
         //{
         //    cinemachineVirtualCameras[0].Priority = 9;
@@ -55,13 +53,10 @@ public class PlayerMove : MonoBehaviour
         //{
         //    cinemachineVirtualCameras[0].Priority =11;
         //}
-
-       
-        
     }
     void Jump()
     {
-      
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (jumpbool)
@@ -71,7 +66,7 @@ public class PlayerMove : MonoBehaviour
             rigidy.AddForce(Vector3.up * jumpspead, ForceMode.Impulse);
             jumpbool = true;
         }
-          
+
     }
     // Update is called once per frame
     void Update()

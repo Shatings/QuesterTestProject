@@ -10,7 +10,7 @@ public class Obstacle : MonoBehaviour
 
     public void anibool(int _index)
     {
-       
+
         ani.SetBool("Find", (_index > 0 ? true : false));
 
     }

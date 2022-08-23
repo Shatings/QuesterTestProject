@@ -28,7 +28,7 @@ public class GameStat
             case 1:
                 return heart;
         }
-        return 404;//예외처리용 
+        return 500;//예외처리용 
     }
     public float SetValue(int _index, float value)
     {
@@ -41,7 +41,7 @@ public class GameStat
                 return (heart += value);
 
         }
-        return 404;//예외처리용
+        return 500;//예외처리용
     }
 
     public void FindOb(Animator ani,GameObject _gameObject)
